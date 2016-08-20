@@ -14,11 +14,29 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Headphones hp = new Headphones();
-		hp.setDescription("adasdf1");
-		hp.setSummary("Masdfsadf");
+		getHeadphones(4);
 
-		removeHeadphonesEntry(3);
+	}
+
+	public static Headphones getHeadphones(int id) {
+		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+		EntityManager em = factory.createEntityManager();
+
+		Query q = em.createQuery("SELECT t FROM Headphones t WHERE t.id=" + id);
+		List<Headphones> resSet = q.getResultList();
+
+		em.close();
+
+		if (resSet.size() != 0) {
+			System.out.println("Found item !!");
+			System.out.println("Description: " + resSet.get(0).getDescription());
+			System.out.println("Summary: " + resSet.get(0).getSummary());
+			System.out.println("ID: " + resSet.get(0).getId());
+			return resSet.get(0);
+		} else {
+			System.out.println("Nothing found !!!");
+			return null;
+		}
 
 	}
 
